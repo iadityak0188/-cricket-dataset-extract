@@ -2,7 +2,7 @@ name: Process IPL Data
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # Runs every day at midnight IST (adjust the schedule as needed)
+    - cron: "0 0 * * *"  # Runs every 6 hours
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -11,11 +11,9 @@ jobs:
 
     steps:
 
-      # Checkout the repository to start processing
       - name: Checkout repository
         uses: actions/checkout@v2
     
-      # Set up Git to handle repository changes
       - name: Set up Git
         run: |
           git config --global user.name "iadityak0188"
@@ -25,24 +23,21 @@ jobs:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
 
       # Create necessary directories for JSON and ZIP files
-      - name: Create json and zip directory
-        run: mkdir -p json/cric_matches zip
+     - name: Create json and zip directory
+        run: mkdir -p json/ipl_match zip
 
-      # Capture the list of files before downloading the new dataset
+      # Capture list of files before download and extraction
       - name: List files before
         id: list_files_before
         run: |
-          ls -A json/cric_matches > files_before.txt
+          ls -A json/ipl_match > files_before.txt
 
-      # Download the IPL dataset zip file from the source
       - name: Download IPL dataset zip
-        run: wget https://cricsheet.org/downloads/cricket_json.zip
+        run: wget https://cricsheet.org/downloads/ipl_json.zip
 
-      # Unzip the IPL dataset
       - name: Unzip IPL dataset
         run: unzip -q ipl_json.zip
 
-      # Move the downloaded JSON and ZIP files to their respective folders
       - name: Move files to folders
         run: |
           mv *.json json/ipl_match
@@ -50,23 +45,23 @@ jobs:
           mv *.zip zip/
           echo "Zip Files moved successfully"
 
-    
+      - name: Get current date and time
+        id: timestamp
+        run: echo "::set-output name=date::$(TZ=Asia/Kolkata date +'%Y-%m-%d %H:%M:%S')"
 
-      # Set up Python for transforming the data 
-      - name: Configure Python
+      - name: Configure Git
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
           architecture: 'x64'
 
-      # List the files after downloading and extraction for verification
+      # Capture list of files after download and extraction
       - name: List files after
         id: list_files_after
         run: |
-          ls -A json/cric_matches > files_after.txt
+          ls -A json/ipl_match > files_after.txt
           wc -l files_after.txt
 
-      # Check if there are any new files to commit and push to the repository
       - name: Check for new files
         id: new_files
         run: |
@@ -84,8 +79,8 @@ jobs:
           fi
         continue-on-error: true
 
-      # Commit and push changes if new files are detected
-      - name: Commit and push changes
+        # Commit and push changes if new files are detected
+      - name: Commit and push changeshanges
         if: steps.new_files.outcome == 'failure'
         run: |
           git init
@@ -94,7 +89,7 @@ jobs:
           git push --force https://github.com/iadityak0188/-cricket-dataset-extract.git main
       
       # Trigger Transform Workflow (if needed to run transformation tasks on the data)
-      - name: Trigger Transform Workflow
+     - name: Trigger Transform Workflow
         run: |
           curl -X POST \
             -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
