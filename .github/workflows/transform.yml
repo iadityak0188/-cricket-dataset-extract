@@ -58,5 +58,5 @@ jobs:
           git config --global user.email "iadhi6336@gmail.com"
           git add csv/
           git commit -m "Dataset updated at - $(echo ${{ steps.timestamp.outputs.date }}) (IST)"
-          git push --force https://github.com/ritesh-ojha/IPL-DATASET.git main
+          git push --force https://github.com/iadityak0188/-cricket-dataset-extract.git main
         continue-on-error: true  
