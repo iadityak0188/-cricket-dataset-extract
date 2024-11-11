@@ -26,18 +26,18 @@ jobs:
 
       - name: Convert line endings to Unix-style
         run: |
-          sed -i 's/\r$//' Ballbyball.py
-          sed -i 's/\r$//' MatchInfo.py
+          sed -i 's/\r$//' scripts/Ballbyball.py
+          sed -i 's/\r$//' scripts/MatchInfo.py
 
       - name: Set execute permissions for Python script
         run: |
-          chmod +x Ballbyball.py
-          chmod +x MatchInfo.py
+          chmod +x scripts/Ballbyball.py
+          chmod +x scripts/MatchInfo.py
 
       - name: Run Python Script
         run: |
-          python Ballbyball.py
-          python MatchInfo.py
+          python scripts/Ballbyball.py
+          python scripts/MatchInfo.py
 
       - name: List contents of current directory (debugging)
         run: ls -al
