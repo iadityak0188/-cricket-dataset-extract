@@ -39,21 +39,31 @@ jobs:
           python Ballbyball.py
           python MatchInfo.py
 
+      - name: List contents of current directory (debugging)
+        run: ls -al
+
       - name: Create csv directory
         run: mkdir -p csv
 
-      - name: Move CSV file to csv directory
-        run: mv *.csv csv/
-        
+      - name: Move CSV files to csv directory
+        run: |
+          mv *.csv csv/
+
+      - name: List contents of csv folder (debugging)
+        run: ls -al csv/
+
       - name: Get current date and time
         id: timestamp
         run: echo "::set-output name=date::$(TZ=Asia/Kolkata date +'%Y-%m-%d %H:%M:%S')"
+
+      - name: Check for changes
+        run: git status
 
       - name: Commit and push changes
         run: |
           git config --global user.name "iadityak0188"
           git config --global user.email "iadhi6336@gmail.com"
           git add csv/
-          git commit -m "Dataset updated at - $(echo ${{ steps.timestamp.outputs.date }}) (IST)"
+          git commit -m "Dataset updated at - $(echo ${{ steps.timestamp.outputs.date }}) (IST)" || echo "No changes to commit"
           git push --force https://github.com/iadityak0188/cricket-dataset-extract.git main
         continue-on-error: true
