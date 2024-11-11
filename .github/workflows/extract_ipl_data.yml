@@ -22,8 +22,7 @@ jobs:
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
 
-      # Create necessary directories for JSON and ZIP files
-     - name: Create json and zip directory
+      - name: Create json and zip directory
         run: mkdir -p json/ipl_match zip
 
       # Capture list of files before download and extraction
@@ -88,8 +87,8 @@ jobs:
           git commit -m "files updated at - $(echo ${{ steps.timestamp.outputs.date }}) (IST)"
           git push --force https://github.com/iadityak0188/-cricket-dataset-extract.git main
       
-      # Trigger Transform Workflow (if needed to run transformation tasks on the data)
-     - name: Trigger Transform Workflow
+      # Trigger Transform Workflow
+      - name: Trigger Transform Workflow
         run: |
           curl -X POST \
             -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
