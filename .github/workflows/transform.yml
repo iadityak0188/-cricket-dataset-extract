@@ -54,8 +54,8 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --global user.name "ritesh-ojha"
-          git config --global user.email "reeteshojha5@gmail.com"
+          git config --global user.name "iadityak0188"
+          git config --global user.email "iadhi6336@gmail.com"
           git add csv/
           git commit -m "Dataset updated at - $(echo ${{ steps.timestamp.outputs.date }}) (IST)"
           git push --force https://github.com/ritesh-ojha/IPL-DATASET.git main
