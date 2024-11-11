@@ -10,8 +10,6 @@ on:
     workflows: ["Process IPL Data"]
     types: [completed]
 
-
-
 jobs:
   transform:
     runs-on: ubuntu-latest
@@ -30,7 +28,6 @@ jobs:
         run: |
           sed -i 's/\r$//' Ballbyball.py
           sed -i 's/\r$//' MatchInfo.py
-        
 
       - name: Set execute permissions for Python script
         run: |
@@ -39,10 +36,10 @@ jobs:
 
       - name: Run Python Script
         run: |
-          "Ballbyball.py"
-          "MatchInfo.py"
+          python Ballbyball.py
+          python MatchInfo.py
 
-      - name: Create json directory
+      - name: Create csv directory
         run: mkdir -p csv
 
       - name: Move CSV file to csv directory
@@ -58,5 +55,5 @@ jobs:
           git config --global user.email "iadhi6336@gmail.com"
           git add csv/
           git commit -m "Dataset updated at - $(echo ${{ steps.timestamp.outputs.date }}) (IST)"
-          git push --force https://github.com/iadityak0188/-cricket-dataset-extract.git main
-        continue-on-error: true  
+          git push --force https://github.com/iadityak0188/cricket-dataset-extract.git main
+        continue-on-error: true
