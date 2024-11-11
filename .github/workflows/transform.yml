@@ -29,18 +29,18 @@ jobs:
 
       - name: Convert line endings to Unix-style
         run: |
-          sed -i 's/\r$//' scripts/Ballbyball.py
-          sed -i 's/\r$//' scripts/MatchInfo.py
+          sed -i 's/\r$//' Ballbyball.py
+          sed -i 's/\r$//' MatchInfo.py
 
       - name: Set execute permissions for Python script
         run: |
-          chmod +x scripts/Ballbyball.py
-          chmod +x scripts/MatchInfo.py
+          chmod +x Ballbyball.py
+          chmod +x MatchInfo.py
 
       - name: Run Python Script
         run: |
-          python scripts/Ballbyball.py
-          python scripts/MatchInfo.py
+          python Ballbyball.py
+          python MatchInfo.py
 
       - name: List contents of current directory (debugging)
         run: ls -al
@@ -68,5 +68,5 @@ jobs:
           git config --global user.email "iadhi6336@gmail.com"
           git add csv/
           git commit -m "Dataset updated at - $(echo ${{ steps.timestamp.outputs.date }}) (IST)" || echo "No changes to commit"
-          git push --force https://github.com/iadityak0188/cricket-dataset-extract.git main
+          git push --force https://github.com/iadityak0188/-cricket-dataset-extract.git main
         continue-on-error: true
